@@ -16,7 +16,7 @@ def main():
 
     # Load the plugins from the plugin directory.
     manager = PluginManager()
-    manager.setPluginPlaces(["veebo/plugins"])
+    manager.setPluginPlaces(["veebo/plugins", "~/.veebo/plugins"])
     manager.collectPlugins()
     # Loop round the plugins and register events.
     for plugin in manager.getAllPlugins():
