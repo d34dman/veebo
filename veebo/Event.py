@@ -85,3 +85,4 @@ class VeeboEvent(Event):
     LOG = "log"
     RESPOND = "respond"
     ASK = "ask"
+    STOP = "stop"

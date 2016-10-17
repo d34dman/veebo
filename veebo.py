@@ -37,10 +37,12 @@ def main():
 
     while True:
         try:
-            print "listening every second..."
+            print('.')
             time.sleep(1)
         except (KeyboardInterrupt, SystemExit):
-            print 'Quitting doPoll'
+            dispatcher.dispatch_event(
+                VeeboEvent( VeeboEvent.STOP, 'veebo_core: Quit' )
+            )
             break
 
     print "Quitting Veebo"
