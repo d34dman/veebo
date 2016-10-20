@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
-import time
 import threading
 from state_machine import *
 
 from yapsy.PluginManager import PluginManager
-from veebo.Event import EventDispatcher
+from Event import EventDispatcher
+
 
 # ------------------------------------------------------------------------------
 # Veebo
 # ------------------------------------------------------------------------------
-
 
 @acts_as_state_machine
 class Veebo():
@@ -30,23 +28,25 @@ class Veebo():
     start = Event(from_states=(starting),
                   to_state=sleeping)
 
-    listen = Event(from_states=(sleeping, processing, saying),
+    listen = Event(from_states=(sleeping, processing),
                    to_state=listening)
 
     process = Event(from_states=(sleeping, listening),
                     to_state=processing)
 
-    sleep = Event(from_states=(listening, processing, saying),
+    sleep = Event(from_states=(listening, processing),
                   to_state=sleeping)
 
-    quit = Event(from_states=(starting, sleeping, listening,
-                              processing, saying),
+    quit = Event(from_states=(starting, sleeping, listening, processing),
                  to_state=stopping)
 
     event_dispatcher = EventDispatcher()
 
     def __init__(self):
         self.initializePlugins()
+
+    def __del__(self):
+        self.quit()
 
     def initializePlugins(self):
         self.plugin_manager = PluginManager()
@@ -62,23 +62,3 @@ class Veebo():
 
         for thread in thread_list:
             thread.start()
-
-
-def main():
-    veebo = Veebo()
-    veebo.start()
-    while True:
-        try:
-            time.sleep(1)
-        except (KeyboardInterrupt, SystemExit):
-            veebo.quit()
-            break
-        except:
-            print "Unexpected error:", sys.exc_info()[0]
-            veebo.quit()
-            break
-
-    print "Quitting Veebo"
-
-if __name__ == "__main__":
-    main()
