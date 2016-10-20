@@ -28,24 +28,24 @@ class Veebo():
     saying = State()
     stopping = State()
 
-    start   = Event(from_states=(starting),
-                    to_state=sleeping)
+    start = Event(from_states=(starting),
+                  to_state=sleeping)
 
-    listen  = Event(from_states=(sleeping, processing, saying),
-                    to_state=listening)
+    listen = Event(from_states=(sleeping, processing, saying),
+                   to_state=listening)
 
     process = Event(from_states=(sleeping, listening),
                     to_state=processing)
 
-    say     = Event(from_states=(sleeping, listening, processing),
-                    to_state=saying)
+    say = Event(from_states=(sleeping, listening, processing),
+                to_state=saying)
 
-    sleep   = Event(from_states=(listening, processing, saying),
-                    to_state=sleeping)
+    sleep = Event(from_states=(listening, processing, saying),
+                  to_state=sleeping)
 
-    quit    = Event(from_states=(starting, sleeping, listening,
+    quit = Event(from_states=(starting, sleeping, listening,
                               processing, saying),
-                    to_state=stopping)
+                 to_state=stopping)
 
     event_dispatcher = EventDispatcher()
 
@@ -54,7 +54,8 @@ class Veebo():
 
     def initializePlugins(self):
         self.plugin_manager = PluginManager()
-        self.plugin_manager.setPluginPlaces(["veebo/plugins", "~/.veebo/plugins"])
+        self.plugin_manager.setPluginPlaces(
+            ["veebo/plugins", "~/.veebo/plugins"])
         # Load the plugins from the plugin directory.
         self.plugin_manager.collectPlugins()
         thread_list = []
@@ -65,7 +66,6 @@ class Veebo():
 
         for thread in thread_list:
             thread.start()
-
 
 
 def main():
