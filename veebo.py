@@ -25,7 +25,6 @@ class Veebo():
     sleeping = State()
     listening = State()
     processing = State()
-    saying = State()
     stopping = State()
 
     start = Event(from_states=(starting),
@@ -36,9 +35,6 @@ class Veebo():
 
     process = Event(from_states=(sleeping, listening),
                     to_state=processing)
-
-    say = Event(from_states=(sleeping, listening, processing),
-                to_state=saying)
 
     sleep = Event(from_states=(listening, processing, saying),
                   to_state=sleeping)
