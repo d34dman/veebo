@@ -3,27 +3,8 @@
 
 
 # ------------------------------------------------------------------------------
-# Event class
-# ------------------------------------------------------------------------------
-
-class Event(object):
-
-    def __init__(self, event_type, data=None):
-        self._type = event_type
-        self._data = data
-
-    @property
-    def type(self):
-        return self._type
-
-    @property
-    def data(self):
-        return self._data
-
-# ------------------------------------------------------------------------------
 # EventDispatcher class
 # ------------------------------------------------------------------------------
-
 
 class EventDispatcher(object):
 
@@ -40,13 +21,13 @@ class EventDispatcher(object):
         else:
             return False
 
-    def dispatch_event(self, event):
+    def dispatch_event(self, event_type, data=None):
         # Dispatch the event to all the associated listeners
-        if event.type in self._events.keys():
-            listeners = self._events[event.type]
+        if event_type in self._events.keys():
+            listeners = self._events[event_type]
 
             for listener in listeners:
-                listener(event)
+                listener(data)
 
     def add_event_listener(self, event_type, listener):
         # Add listener to the event type
@@ -71,18 +52,3 @@ class EventDispatcher(object):
                 listeners.remove(listener)
 
                 self._events[event_type] = listeners
-
-
-# ------------------------------------------------------------------------------
-# VeeboEvent class
-# ------------------------------------------------------------------------------
-
-class VeeboEvent(Event):
-    START = "start"
-    WAKE = "wake"
-    LISTEN = "listen"
-    TALK = "talk"
-    LOG = "log"
-    RESPOND = "respond"
-    ASK = "ask"
-    STOP = "stop"
