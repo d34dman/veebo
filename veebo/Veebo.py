@@ -40,12 +40,15 @@ class Veebo():
     quit = Event(from_states=(starting, sleeping, listening, processing),
                  to_state=stopping)
 
-    event_dispatcher = EventDispatcher()
+
 
     def __init__(self):
+        self.event_dispatcher = EventDispatcher()
         self.initializePlugins()
 
     def __del__(self):
+        self.plugin_manager = None
+        self.event_dispatcher = None
         self.quit()
 
     def initializePlugins(self):
