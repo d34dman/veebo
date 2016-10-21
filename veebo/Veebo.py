@@ -49,7 +49,8 @@ class Veebo():
     def __del__(self):
         self.plugin_manager = None
         self.event_dispatcher = None
-        self.quit()
+        if not self.is_stopping:
+            self.quit()
 
     def initializePlugins(self):
         self.plugin_manager = PluginManager()
