@@ -19,13 +19,13 @@ class Veebo():
 
     name = 'Veebo'
 
-    starting = State(initial=True)
+    initializing = State(initial=True)
     sleeping = State()
     listening = State()
     processing = State()
     stopping = State()
 
-    start = Event(from_states=(starting),
+    start = Event(from_states=(initializing),
                   to_state=sleeping)
 
     listen = Event(from_states=(sleeping, processing),
@@ -37,7 +37,7 @@ class Veebo():
     sleep = Event(from_states=(listening, processing),
                   to_state=sleeping)
 
-    quit = Event(from_states=(starting, sleeping, listening, processing),
+    quit = Event(from_states=(initializing, sleeping, listening, processing),
                  to_state=stopping)
 
 
