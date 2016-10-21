@@ -5,7 +5,7 @@ import threading
 from state_machine import *
 
 from yapsy.PluginManager import PluginManager
-from Event import EventDispatcher
+from EventDispatcher import EventDispatcher
 
 
 # ------------------------------------------------------------------------------
