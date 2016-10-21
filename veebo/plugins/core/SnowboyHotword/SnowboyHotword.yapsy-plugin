@@ -1,0 +1,9 @@
+[Core]
+Name = SnowboyHotword
+Module = SnowboyHotword
+
+[Documentation]
+Author = Shibin Das
+Version = 0.1
+Website = http://www.digitwings.com
+Description = Snowboy Hotword detection plugin for Veebo
