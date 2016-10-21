@@ -27,7 +27,7 @@ class EventDispatcher(object):
             listeners = self._events[event_type]
 
             for listener in listeners:
-                listener(data)
+                listener(event_type, data)
 
     def add_event_listener(self, event_type, listener):
         # Add listener to the event type
