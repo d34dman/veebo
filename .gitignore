@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# Veebo specific
+veebo/plugins/contrib/
+
+
 # Distribution / packaging
 .Python
 env/
