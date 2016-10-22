@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from yapsy.IPlugin import IPlugin
-from snowboy import snowboydecoder
+import sys
 
 class SnowboyWakeup(IPlugin):
 
@@ -11,8 +11,11 @@ class SnowboyWakeup(IPlugin):
 
     def init(self, veebo):
         self.veebo = veebo
-        model = 'veebo.pmdl'
-        self.detector = snowboydecoder.HotwordDetector(model, sensitivity=0.5)
+        hotword = self.veebo.config['plugins']['SnowboyHotword']['snowboy']['hotword']
+        snowboy_dir = self.veebo.config['plugins']['SnowboyHotword']['snowboy']['dir']
+        sys.path.insert(0, snowboy_dir)
+        import snowboydecoder
+        self.detector = snowboydecoder.HotwordDetector(hotword, sensitivity=0.5)
 
     def interrupt_check(self):
         return self.veebo.is_stopping
