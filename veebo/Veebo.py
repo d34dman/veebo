@@ -111,8 +111,10 @@ class Veebo():
         thread_list = []
         for plugin in self.plugin_manager.getAllPlugins():
             plugin.plugin_object.init(self)
-            t = threading.Thread(target=plugin.plugin_object.run)
-            thread_list.append(t)
+            if "run" in dir(plugin.plugin_object):
+                t = threading.Thread(target=plugin.plugin_object.run)
+                thread_list.append(t)
+
 
         for thread in thread_list:
             thread.start()
