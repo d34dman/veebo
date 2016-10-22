@@ -7,7 +7,7 @@ It is modular and can be extended using plugins.
 
 Veebo uses state_machine to let plugins know its current state and interact with it.
 
-![Veebo States](data/veebo_states.png "Veebo States")
+![Veebo States](docs/veebo_states.png "Veebo States")
 
 Installation
 ------------
