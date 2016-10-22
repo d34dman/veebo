@@ -80,7 +80,7 @@ class Veebo():
                 self.config = yaml.safe_load(f)
 
         except OSError:
-            print("Can't open config file: '%s'", self.path['config_file'])
+            logging.error("Can't open config file: '%s'", self.path['config_file'])
             raise
 
     def health_check_config_dir(self):
@@ -90,13 +90,13 @@ class Veebo():
                 # Try creating the config directory
                 os.makedirs(self.path['config'])
             except OSError:
-                print("Can't create configuration directory: '%s'",
+                logging.error("Can't create configuration directory: '%s'",
                       self.path['config'])
                 raise
 
         # Check if config directory is writable
         if not os.access(self.path['config'], os.W_OK):
-            print("Configuration directory '%s' is not writable.",
+            logging.error("Configuration directory '%s' is not writable.",
                   self.path['config'])
 
     def __del__(self):
