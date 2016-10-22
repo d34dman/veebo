@@ -59,7 +59,9 @@ class Veebo():
         self.path['resources'] = os.path.join(self.path['app'], 'resources')
         self.path['library'] = os.path.join(self.path['app'], 'veebo')
         self.path['plugins'] = os.path.join(
-            self.path['library'], 'veebo/plugins')
+            self.path['library'], 'plugins')
+        self.path['user_plugins'] = os.path.expanduser(
+            os.getenv('VEEBO_CONFIG', '~/.veebo/plugins'))
 
         self.path['config'] = os.path.expanduser(
             os.getenv('VEEBO_CONFIG', '~/.veebo'))
@@ -106,7 +108,7 @@ class Veebo():
     def initializePlugins(self):
         self.plugin_manager = PluginManager()
         self.plugin_manager.setPluginPlaces(
-            ["veebo/plugins", "~/.veebo/plugins"])
+            [self.path['plugins'], self.path['user_plugins']])
         # Load the plugins from the plugin directory.
         self.plugin_manager.collectPlugins()
         thread_list = []
