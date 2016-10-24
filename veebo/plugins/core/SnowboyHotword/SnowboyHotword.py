@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from yapsy.IPlugin import IPlugin
+from veebo.interfaces.DefaultPluginBase import DefaultPluginBase
 import logging
 import sys
 import time
 
 
-class SnowboyHotword(IPlugin):
+class SnowboyHotword(DefaultPluginBase):
 
     def __init__(self):
         self.veebo = False
+        self.is_activated = False
 
-    def init(self, veebo):
+    def activate(self, veebo):
+        self.is_activated = True
         self.veebo = veebo
-
+        self.config = self.veebo.config['plugins']['config']['SnowboyHotword']
         # Pick up models
-        hotwords = self.veebo.config['plugins']['SnowboyHotword']['hotwords']
+        hotwords = self.config['hotwords']
         models = []
         for hotword in hotwords:
             models.insert(hotword, hotwords[hotword]['model'])
@@ -24,7 +26,7 @@ class SnowboyHotword(IPlugin):
         sensitivity = [0.5]*len(models)
 
         # Obtain snowboy directory from configuration to load the whole library
-        snowboy_dir = self.veebo.config['plugins']['SnowboyHotword']['snowboy']['dir']
+        snowboy_dir = self.config['snowboy']['dir']
         sys.path.insert(0, snowboy_dir)
         import snowboydecoder
         self.detector = snowboydecoder.HotwordDetector(
@@ -34,7 +36,10 @@ class SnowboyHotword(IPlugin):
         return self.veebo.is_stopping
 
     def snowboy_detected(self, hotword):
+        logger = self.veebo.logger
         if self.veebo.is_sleeping:
+            logger.debug('Hotword detected while sleeping')
+            logger.debug(hotword)
             event_type = hotword['action']
             data = {
                 'event': {
@@ -46,10 +51,11 @@ class SnowboyHotword(IPlugin):
             }
             self.veebo.event_dispatcher.dispatch_event(event_type, data)
         else:
-            print 'veebo is already awake'
+            logger.debug("Hotword detected while not sleeping")
+            logger.debug(hotword)
 
     def run(self):
-        hotwords = self.veebo.config['plugins']['SnowboyHotword']['hotwords']
+        hotwords = self.config['hotwords']
         callbacks = []
         for hotword in hotwords:
             def __closure(h):
